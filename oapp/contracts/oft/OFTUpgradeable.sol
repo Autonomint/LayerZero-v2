@@ -14,7 +14,7 @@ abstract contract OFTUpgradeable is OFTCoreUpgradeable, ERC20Upgradeable {
      * @dev Constructor for the OFT contract.
      * @param _lzEndpoint The LayerZero endpoint address.
      */
-    constructor(address _lzEndpoint) OFTCoreUpgradeable(decimals(), _lzEndpoint) {}
+    // constructor(address _lzEndpoint) OFTCoreUpgradeable(decimals(), _lzEndpoint) {}
 
     /**
      * @dev Initializes the OFT with the provided name, symbol, and delegate.
@@ -26,9 +26,9 @@ abstract contract OFTUpgradeable is OFTCoreUpgradeable, ERC20Upgradeable {
      * @dev Ownable is not initialized here on purpose. It should be initialized in the child contract to
      * accommodate the different version of Ownable.
      */
-    function __OFT_init(string memory _name, string memory _symbol, address _delegate) internal onlyInitializing {
+    function __OFT_init(string memory _name, string memory _symbol, address _lzEndpoint, address _delegate) internal onlyInitializing {
         __ERC20_init(_name, _symbol);
-        __OFTCore_init(_delegate);
+        __OFTCore_init(decimals(), _lzEndpoint, _delegate);
     }
 
     function __OFT_init_unchained() internal onlyInitializing {}

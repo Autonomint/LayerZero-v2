@@ -47,7 +47,7 @@ abstract contract OFTCoreUpgradeable is
     //  you can only display 1.23 -> uint(123).
     //  @dev To preserve the dust that would otherwise be lost on that conversion,
     //  we need to unify a denomination that can be represented on ALL chains inside of the OFT mesh
-    uint256 public immutable decimalConversionRate;
+    uint256 public decimalConversionRate;
 
     // @notice Msg types that are used to identify the various OFT operations.
     // @dev This can be extended in child contracts for non-default oft operations
@@ -68,10 +68,10 @@ abstract contract OFTCoreUpgradeable is
      * @param _localDecimals The decimals of the token on the local chain (this chain).
      * @param _endpoint The address of the LayerZero endpoint.
      */
-    constructor(uint8 _localDecimals, address _endpoint) OAppUpgradeable(_endpoint) {
-        if (_localDecimals < sharedDecimals()) revert InvalidLocalDecimals();
-        decimalConversionRate = 10 ** (_localDecimals - sharedDecimals());
-    }
+    // constructor(uint8 _localDecimals, address _endpoint) OAppUpgradeable(_endpoint) {
+    //     if (_localDecimals < sharedDecimals()) revert InvalidLocalDecimals();
+    //     decimalConversionRate = 10 ** (_localDecimals - sharedDecimals());
+    // }
 
     /**
      * @dev Initializes the OFTCore contract.
@@ -81,8 +81,10 @@ abstract contract OFTCoreUpgradeable is
      * @dev Ownable is not initialized here on purpose. It should be initialized in the child contract to
      * accommodate the different version of Ownable.
      */
-    function __OFTCore_init(address _delegate) internal onlyInitializing {
-        __OAppCore_init(_delegate);
+    function __OFTCore_init(uint8 _localDecimals, address _endpoint, address _delegate) internal onlyInitializing {
+        if (_localDecimals < sharedDecimals()) revert InvalidLocalDecimals();
+        decimalConversionRate = 10 ** (_localDecimals - sharedDecimals());
+        __OAppCore_init(_endpoint, _delegate);
     }
 
     function __OFTCore_init_unchained() internal onlyInitializing {}

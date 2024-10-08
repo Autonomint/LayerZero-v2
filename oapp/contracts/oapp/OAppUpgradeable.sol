@@ -19,7 +19,7 @@ abstract contract OAppUpgradeable is OAppSenderUpgradeable, OAppReceiverUpgradea
      * @dev Constructor to initialize the OApp with the provided endpoint and owner.
      * @param _endpoint The address of the LOCAL LayerZero endpoint.
      */
-    constructor(address _endpoint) OAppCoreUpgradeable(_endpoint) {}
+    // constructor(address _endpoint) OAppCoreUpgradeable(_endpoint) {}
 
     /**
      * @dev Initializes the OApp with the provided delegate.
@@ -29,8 +29,8 @@ abstract contract OAppUpgradeable is OAppSenderUpgradeable, OAppReceiverUpgradea
      * @dev Ownable is not initialized here on purpose. It should be initialized in the child contract to
      * accommodate the different version of Ownable.
      */
-    function __OApp_init(address _delegate) internal onlyInitializing {
-        __OAppCore_init(_delegate);
+    function __OApp_init(address _endpoint, address _delegate) internal onlyInitializing {
+        __OAppCore_init(_endpoint, _delegate);
     }
 
     function __OApp_init_unchained() internal onlyInitializing {}
